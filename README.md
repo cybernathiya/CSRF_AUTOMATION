@@ -1,739 +1,481 @@
-🔐 CSRF Automation & Vulnerability Scanner
+🛡️ CSRF AUTOMATION
 
-<p align="center">
+<p align="center"> <img src="https://img.shields.io/badge/CSRF-AUTOMATION-EF4444?style=for-the-badge&logo=security&logoColor=white" /> <img src="https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge&logo=python&logoColor=white" /> <img src="https://img.shields.io/badge/Web%20Security-Scanner-7C3AED?style=for-the-badge" /> <img src="https://img.shields.io/badge/Status-Educational-22C55E?style=for-the-badge" /> </p>
 
-<img src="https://img.shields.io/badge/Security-CSRF%20Scanner-red?style=for-the-badge" alt="CSRF Scanner">
+<p align="center"> <b>🔎 Automated CSRF Detection • 🕷️ Smart Crawling • 📊 Security Reports • 📈 Live Monitoring</b> </p>
 
-<img src="https://img.shields.io/badge/Python-3.x-blue?style=for-the-badge&logo=python" alt="Python">
+<p align="center"> A Python-based heuristic security scanner for discovering and analyzing potential Cross-Site Request Forgery (CSRF) weaknesses in authorized web applications. </p>
 
-<img src="https://img.shields.io/badge/Web%20Security-Automation-orange?style=for-the-badge" alt="Web Security">
+⚡ What is CSRF AUTOMATION?
 
-<img src="https://img.shields.io/badge/Status-Educational-success?style=for-the-badge" alt="Educational">
+CSRF AUTOMATION is a lightweight web-security assessment framework that automatically:
 
-</p>
+        🌐 TARGET
+           │
+           ▼
+      🕷️ CRAWLER
+           │
+           ▼
+     📝 FORM DISCOVERY
+           │
+           ▼
+     🛡️ TOKEN ANALYSIS
+           │
+           ▼
+     🍪 COOKIE ANALYSIS
+           │
+           ▼
+     📡 REQUEST ANALYSIS
+           │
+           ▼
+       📊 FINDINGS
+        ╱    │    ╲
+       ▼     ▼     ▼
+     JSON   HTML   LIVE
+    REPORT REPORT MONITOR
 
-<p align="center"> <b>Automated heuristic CSRF security assessment for authorized web applications</b> </p>
+Important: This is a heuristic scanner, not an exploitation framework. It does not submit forms or claim that a finding is automatically exploitable.
+🎯 Why this project?
 
-📌 Project Overview
+Traditional manual CSRF assessment can become repetitive:
 
-CSRF Automation is an educational web-security automation project designed to identify potential Cross-Site Request Forgery (CSRF) weaknesses in web applications.
-
-The scanner crawls authorized target applications, discovers HTML forms, analyzes their request characteristics, detects fields that appear to represent CSRF tokens, observes cookie attributes, and generates structured security reports.
-
-The project also provides monitoring interfaces for observing scan progress, discovered forms, CSRF-token indicators, potential findings, errors, and scanner logs.
-
-⚠️ Important: This project is intended for systems that you own or have explicit permission to test. It is a heuristic scanner and does not submit forms or prove exploitability. Findings marked as potential issues require manual validation.
-✨ Features
-🔍 Automated website crawling
-📝 HTML form discovery
-🛡️ CSRF-token field detection
-🍪 Cookie/security-attribute observation
-🔐 Optional authenticated scanning using Netscape/Mozilla cookie files
-🌐 Support for multiple starting URLs
-📂 Configurable crawl scope
-🚫 Configurable path exclusions
-⏱️ Configurable request delay
-🌎 Optional JavaScript rendering using Playwright
-📊 JSON report generation
-📄 HTML report generation
-🖥️ Console result summary
-📜 Scan logging
-📈 Real-time scanner monitoring
-🧪 Test-target application support
-🔐 Event report generation
-🧩 Modular scanner architecture
-
-The main scanner connects the input/configuration layer to session creation, crawling/form collection, token detection, request analysis, reporting, and console/HTML output. 
-G
-GitHub
-
-🎯 What Is CSRF?
-
-Cross-Site Request Forgery (CSRF) is a web security vulnerability where an attacker tricks an authenticated user's browser into sending an unintended request to a trusted application.
-
-A typical vulnerable request may look conceptually like:
-
-Victim Browser
-      |
-      | Authenticated request
-      | + session cookie
-      v
-Trusted Web Application
-      |
-      | Performs state-changing action
-      v
-Unauthorized Operation
+Open Page
+   ↓
+Find Forms
+   ↓
+Inspect Inputs
+   ↓
+Search for CSRF Token
+   ↓
+Inspect Cookies
+   ↓
+Check Requests
+   ↓
+Document Result
+   ↓
+Repeat...
 
 
-CSRF attacks rely heavily on browser behavior surrounding authenticated sessions and application requests. OWASP recommends defenses such as CSRF tokens and appropriate cookie protections. 
-G
-GitHub
-+1
+CSRF AUTOMATION turns this into:
 
-🧠 How This Project Works
+             ┌─────────────────────┐
+             │   START SCAN 🚀     │
+             └──────────┬──────────┘
+                        ↓
+             ┌─────────────────────┐
+             │  DISCOVER PAGES 🌐  │
+             └──────────┬──────────┘
+                        ↓
+             ┌─────────────────────┐
+             │   FIND FORMS 📝     │
+             └──────────┬──────────┘
+                        ↓
+          ┌─────────────┴─────────────┐
+          ↓                           ↓
+   🛡️ TOKEN CHECK              🍪 COOKIE CHECK
+          │                           │
+          └─────────────┬─────────────┘
+                        ↓
+                 📡 ANALYSIS
+                        ↓
+                  📊 REPORT
+                        ↓
+             ┌──────────┼──────────┐
+             ↓          ↓          ↓
+           JSON       HTML       LIVE UI
 
-The scanner follows this general process:
+🧠 Core Architecture
+flowchart TB
 
-flowchart TD
+    USER(["👤 Security Tester"])
 
-    A["👤 User Starts Scanner"] --> B["⚙️ Read Scanner Configuration"]
+    CLI["🖥️ CLI / Input"]
 
-    B --> C["🌐 Enter Target URL(s)"]
-
-    C --> D["🔐 Create HTTP Session"]
-
-    D --> E{"🍪 Cookie File Provided?"}
-
-    E -->|Yes| F["Load Authorized Session Cookies"]
-    E -->|No| G["Create New Session"]
-
-    F --> H["🕷️ Start Crawler"]
-    G --> H
-
-    H --> I["🔎 Discover Pages"]
-
-    I --> J["📝 Discover HTML Forms"]
-
-    J --> K["🍪 Observe Cookies"]
-
-    K --> L["🛡️ Detect Possible CSRF Tokens"]
-
-    L --> M["📡 Analyze Request Characteristics"]
-
-    M --> N["📊 Generate Findings"]
-
-    N --> O["📄 Generate JSON Report"]
-
-    N --> P["🌐 Generate HTML Report"]
-
-    N --> Q["🖥️ Console Summary"]
-
-    O --> R["📁 Output Directory"]
-    P --> R
-    Q --> R
-
-    R --> S["📜 Scan Logs"]
-
-    S --> T["✅ Scan Complete"]
-
-🏗️ System Architecture
-flowchart LR
-
-    U["👤 Security Tester"]
-
-    CLI["🖥️ CLI Input"]
-
-    CONFIG["⚙️ Config"]
+    CONFIG["⚙️ Configuration"]
 
     SESSION["🔐 Session Factory"]
 
-    CRAWLER["🕷️ Form Collector / Crawler"]
+    CRAWLER["🕷️ Smart Crawler"]
+
+    TARGET["🌐 Authorized Web Application"]
+
+    FORMS["📝 Form Collector"]
 
     TOKEN["🛡️ Token Detector"]
 
-    ANALYZER["📡 Request Analyzer"]
+    COOKIE["🍪 Cookie Analyzer"]
 
-    REPORT["📊 Report Generator"]
+    REQUEST["📡 Request Analyzer"]
 
-    DISPLAY["🖥️ Result Display"]
+    RESULT["📊 Findings Engine"]
 
-    JSON["📄 report.json"]
+    JSON["📄 JSON Report"]
 
-    HTML["🌐 report.html"]
+    HTML["🌐 HTML Report"]
 
-    LOG["📜 scan_log.txt"]
+    LOG["📜 Logs"]
 
-    MONITOR["📈 Scanner Monitor"]
+    MONITOR["📈 Live Monitor"]
 
-    TARGET["🌍 Authorized Target"]
-
-    U --> CLI
+    USER --> CLI
+    CLI --> CONFIG
     CONFIG --> SESSION
-
-    CLI --> SESSION
-    CLI --> CRAWLER
 
     SESSION --> CRAWLER
     CRAWLER <--> TARGET
 
-    CRAWLER --> TOKEN
-    CRAWLER --> ANALYZER
-
-    TOKEN --> REPORT
-    ANALYZER --> REPORT
-
-    REPORT --> JSON
-    REPORT --> DISPLAY
-
-    DISPLAY --> HTML
-    DISPLAY --> LOG
-
-    LOG --> MONITOR
-    CRAWLER --> MONITOR
-    REPORT --> MONITOR
-
-🔄 Detailed Scanning Flow
-flowchart TD
-
-    START(["🚀 Start"])
-
-    INPUT["Read user input"]
-
-    URLS["Load target URL(s)"]
-
-    OPTIONS["Load scan options"]
-
-    SESSION["Create scanner session"]
-
-    COOKIE{"Cookie file?"}
-
-    LOADCOOKIE["Load Netscape/Mozilla cookies"]
-
-    NORMALSESSION["Use normal session"]
-
-    CRAWL["Start crawling"]
-
-    SCOPE{"Within configured scope?"}
-
-    EXCLUDE{"Excluded path?"}
-
-    FETCH["Fetch page"]
-
-    RENDER{"JavaScript rendering enabled?"}
-
-    PLAYWRIGHT["Render using Playwright"]
-
-    HTTP["Process HTTP response"]
-
-    FORMS["Extract HTML forms"]
-
-    COOKIES["Record cookie observations"]
-
-    LINKS["Extract links"]
-
-    TOKEN["Analyze possible CSRF token fields"]
-
-    REQUEST["Analyze form/request characteristics"]
-
-    RESULT["Create heuristic result"]
-
-    MORE{"More pages/forms?"}
-
-    REPORT["Generate reports"]
-
-    JSON["JSON report"]
-
-    HTML["HTML report"]
-
-    LOG["Write scan logs"]
-
-    END(["✅ Complete"])
-
-    START --> INPUT
-    INPUT --> URLS
-    URLS --> OPTIONS
-    OPTIONS --> SESSION
-
-    SESSION --> COOKIE
-
-    COOKIE -->|Yes| LOADCOOKIE
-    COOKIE -->|No| NORMALSESSION
-
-    LOADCOOKIE --> CRAWL
-    NORMALSESSION --> CRAWL
-
-    CRAWL --> SCOPE
-
-    SCOPE -->|No| MORE
-    SCOPE -->|Yes| EXCLUDE
-
-    EXCLUDE -->|Yes| MORE
-    EXCLUDE -->|No| FETCH
-
-    FETCH --> RENDER
-
-    RENDER -->|Yes| PLAYWRIGHT
-    RENDER -->|No| HTTP
-
-    PLAYWRIGHT --> HTTP
-
-    HTTP --> FORMS
-    HTTP --> COOKIES
-    HTTP --> LINKS
+    CRAWLER --> FORMS
+    CRAWLER --> COOKIE
 
     FORMS --> TOKEN
     FORMS --> REQUEST
 
     TOKEN --> RESULT
+    COOKIE --> RESULT
     REQUEST --> RESULT
 
-    LINKS --> SCOPE
+    RESULT --> JSON
+    RESULT --> HTML
+    RESULT --> LOG
+    RESULT --> MONITOR
 
-    RESULT --> MORE
+    MONITOR --> USER
+    JSON --> USER
+    HTML --> USER
 
-    MORE -->|Yes| CRAWL
-    MORE -->|No| REPORT
+🔥 Features
+Feature	Description
+🕷️ Web Crawler	Discovers pages and forms
+📝 Form Detection	Finds HTML forms automatically
+🛡️ CSRF Token Detection	Searches for token-like fields
+🍪 Cookie Analysis	Observes cookie security attributes
+🔐 Authenticated Scanning	Supports authorized cookie-file sessions
+🎭 JavaScript Rendering	Optional Playwright support
+📊 JSON Reports	Machine-readable results
+🌐 HTML Reports	Human-readable reports
+📈 Live Monitoring	Monitor scanner progress
+📜 Logging	Detailed scan logs
+🚫 Scope Control	Restrict crawler boundaries
+⏱️ Request Delay	Control request frequency
+🔄 THE SCAN PIPELINE
+flowchart LR
 
-    REPORT --> JSON
-    REPORT --> HTML
-    REPORT --> LOG
+    A["🚀 START"] --> B["🌐 TARGET"]
 
-    JSON --> END
-    HTML --> END
-    LOG --> END
+    B --> C["🕷️ CRAWL"]
 
-🛡️ CSRF Analysis Flow
+    C --> D["📄 PAGE"]
+
+    D --> E["📝 FORM"]
+
+    E --> F["🛡️ TOKEN"]
+
+    E --> G["📡 REQUEST"]
+
+    D --> H["🍪 COOKIE"]
+
+    F --> I["🧠 ANALYZE"]
+    G --> I
+    H --> I
+
+    I --> J{"Potential Issue?"}
+
+    J -->|YES| K["⚠️ REVIEW"]
+
+    J -->|NO| L["✅ PROTECTED / INFO"]
+
+    K --> M["📊 REPORT"]
+    L --> M
+
+    M --> N["📄 JSON"]
+    M --> O["🌐 HTML"]
+    M --> P["📈 MONITOR"]
+
+🛡️ CSRF Detection Logic
+
+The scanner looks for indicators, not guaranteed vulnerabilities.
+
 flowchart TD
 
-    FORM["📝 Discovered Form"]
+    FORM["📝 HTML FORM"]
 
-    METHOD["Determine HTTP Method"]
+    METHOD["HTTP METHOD"]
 
-    ACTION["Determine Form Action"]
+    ACTION["FORM ACTION"]
 
-    FIELDS["Inspect Form Fields"]
+    INPUTS["INPUT FIELDS"]
 
-    TOKENSCAN["🔎 Search for CSRF-like Token"]
+    TOKEN["🔎 TOKEN-LIKE FIELD"]
 
-    TOKENFOUND{"Possible token found?"}
+    COOKIE["🍪 COOKIE OBSERVATION"]
 
-    COOKIES["🍪 Inspect Cookie Observations"]
+    ANALYZE["🧠 HEURISTIC ANALYSIS"]
 
-    REQUEST["📡 Analyze Request"]
+    RESULT{"Result"}
 
-    METHODCHECK{"State-changing method?"}
+    HIGH["🔴 Potentially Significant"]
 
-    INFO["ℹ️ Informational Result"]
+    MEDIUM["🟠 Potential Issue"]
 
-    REVIEW["🔎 Manual Review Required"]
+    INFO["🔵 Informational"]
 
-    POTENTIAL["⚠️ Potential CSRF Issue"]
-
-    PROTECTED["🛡️ Potentially Protected"]
-
-    REPORT["📊 Add Result to Report"]
+    REVIEW["🟡 Manual Review"]
 
     FORM --> METHOD
-    METHOD --> ACTION
-    ACTION --> FIELDS
+    FORM --> ACTION
+    FORM --> INPUTS
 
-    FIELDS --> TOKENSCAN
-    TOKENSCAN --> TOKENFOUND
+    INPUTS --> TOKEN
+    FORM --> COOKIE
 
-    TOKENFOUND -->|Yes| COOKIES
-    TOKENFOUND -->|No| COOKIES
+    METHOD --> ANALYZE
+    ACTION --> ANALYZE
+    TOKEN --> ANALYZE
+    COOKIE --> ANALYZE
 
-    COOKIES --> REQUEST
-    REQUEST --> METHODCHECK
+    ANALYZE --> RESULT
 
-    METHODCHECK -->|No| INFO
-    METHODCHECK -->|Yes| REVIEW
+    RESULT --> HIGH
+    RESULT --> MEDIUM
+    RESULT --> INFO
+    RESULT --> REVIEW
 
-    REVIEW --> POTENTIAL
-    REVIEW --> PROTECTED
-
-    INFO --> REPORT
-    POTENTIAL --> REPORT
-    PROTECTED --> REPORT
-
-Note: Detection is heuristic. A field whose name looks like a CSRF token does not necessarily mean the server validates it. Likewise, the absence of an obvious token does not by itself prove a vulnerability. The repository's own documentation explicitly treats HIGH/MEDIUM results as potential findings requiring manual validation. 
-G
-GitHub
-🍪 Cookie Analysis Flow
+🔎 A scanner result is not proof of exploitability. Manual validation is required.
+🕷️ CRAWLER FLOW
 flowchart TD
 
-    PAGE["🌐 HTTP Response"]
+    START(["🌐 START URL"])
 
-    SETCOOKIE["Read Set-Cookie Headers"]
+    FETCH["📡 Fetch Page"]
 
-    COOKIE["🍪 Cookie Observation"]
-
-    NAME["Cookie Name"]
-
-    FLAGS["Security Attributes"]
-
-    SECURE["Secure"]
-
-    HTTPONLY["HttpOnly"]
-
-    SAMESITE["SameSite"]
-
-    SESSION{"Looks like session/auth cookie?"}
-
-    AUTH["🔐 Possible Authentication Cookie"]
-
-    NORMAL["Normal Cookie"]
-
-    REPORT["📊 Store Observation"]
-
-    PAGE --> SETCOOKIE
-    SETCOOKIE --> COOKIE
-
-    COOKIE --> NAME
-    COOKIE --> FLAGS
-
-    FLAGS --> SECURE
-    FLAGS --> HTTPONLY
-    FLAGS --> SAMESITE
-
-    NAME --> SESSION
-
-    SESSION -->|Yes| AUTH
-    SESSION -->|No| NORMAL
-
-    AUTH --> REPORT
-    NORMAL --> REPORT
-    SECURE --> REPORT
-    HTTPONLY --> REPORT
-    SAMESITE --> REPORT
-
-🌐 JavaScript Rendering Flow
-
-The project supports optional Playwright rendering for pages where important content is generated by JavaScript. The browser-enabled dependency file adds Playwright on top of the normal requirements. 
-G
-GitHub
-
-flowchart TD
-
-    START["🌐 Target Page"]
-
-    MODE{"Render JavaScript?"}
-
-    HTTP["📡 HTTP Crawler"]
-
-    PW["🎭 Playwright Chromium"]
-
-    DOM["📄 Final DOM"]
-
-    FORMS["📝 Extract Forms"]
+    PARSE["🔍 Parse HTML"]
 
     LINKS["🔗 Extract Links"]
 
-    ANALYSIS["🔎 Security Analysis"]
+    FORMS["📝 Extract Forms"]
 
-    START --> MODE
+    COOKIE["🍪 Record Cookies"]
 
-    MODE -->|No| HTTP
-    MODE -->|Yes| PW
+    SCOPE{"Within Scope?"}
 
-    HTTP --> DOM
-    PW --> DOM
+    QUEUE["📋 Add to Crawl Queue"]
 
-    DOM --> FORMS
-    DOM --> LINKS
+    SKIP["⏭️ Skip"]
 
-    FORMS --> ANALYSIS
-    LINKS --> ANALYSIS
+    MORE{"More Pages?"}
 
-📊 Report Generation Flow
+    DONE(["✅ Crawl Complete"])
+
+    START --> FETCH
+    FETCH --> PARSE
+
+    PARSE --> LINKS
+    PARSE --> FORMS
+    PARSE --> COOKIE
+
+    LINKS --> SCOPE
+
+    SCOPE -->|YES| QUEUE
+    SCOPE -->|NO| SKIP
+
+    QUEUE --> MORE
+    FORMS --> MORE
+    COOKIE --> MORE
+
+    MORE -->|YES| FETCH
+    MORE -->|NO| DONE
+
+🎭 JavaScript Rendering
+
+For modern JavaScript-heavy applications, optional browser rendering can be enabled.
+
 flowchart LR
 
-    FORM["📝 Form"]
+    PAGE["🌐 Web Page"]
 
-    TOKEN["🛡️ Token Analysis"]
+    CHECK{"JavaScript Required?"}
 
-    REQUEST["📡 Request Analysis"]
+    HTTP["📡 HTTP Request"]
 
-    RESULT["📊 Combined Result"]
+    PLAYWRIGHT["🎭 Playwright"]
 
-    GENERATOR["Report Generator"]
+    DOM["📄 Final DOM"]
 
-    JSON["report.json"]
+    ANALYZE["🔎 Analyze"]
 
-    HTML["report.html"]
+    PAGE --> CHECK
 
-    CONSOLE["Console Summary"]
+    CHECK -->|NO| HTTP
+    CHECK -->|YES| PLAYWRIGHT
 
-    LOG["scan_log.txt"]
+    HTTP --> DOM
+    PLAYWRIGHT --> DOM
 
-    FORM --> TOKEN
-    FORM --> REQUEST
-
-    TOKEN --> RESULT
-    REQUEST --> RESULT
-
-    RESULT --> GENERATOR
-
-    GENERATOR --> JSON
-    GENERATOR --> HTML
-    GENERATOR --> CONSOLE
-    GENERATOR --> LOG
+    DOM --> ANALYZE
 
 
-The current entry point writes JSON results, renders an HTML report, prints a console summary, and records crawl/scan information in the configured log path. 
-G
-GitHub
+Install browser support:
 
-📈 Real-Time Monitoring Architecture
+pip install -r requirements-browser.txt
+python -m playwright install chromium
 
-The repository contains monitoring interfaces that expose scanner status, current site/form, total sites, scanned sites, forms, CSRF-token indicators, vulnerable/protected form counts, errors, progress, timestamps, and live logs. 
-G
-GitHub
-+1
+🍪 AUTHENTICATED SCANNING
 
-flowchart TD
+Authorized browser cookies can be supplied using a Netscape/Mozilla-format cookie file.
 
-    SCANNER["🛡️ CSRF Scanner"]
+sequenceDiagram
 
-    STATUS["📊 Scanner Status"]
+    actor Tester
+    participant Browser
+    participant CookieFile
+    participant Scanner
+    participant Target
 
+    Tester->>Browser: Login
+    Browser->>CookieFile: Export authorized cookies
+    Tester->>Scanner: Provide cookie file
+    Scanner->>Scanner: Load cookies
+    Scanner->>Target: Authenticated request
+    Target-->>Scanner: Response
+    Scanner->>Scanner: Analyze forms
+    Scanner-->>Tester: Generate report
+
+
+⚠️ Treat cookie files like passwords.
+
+📊 REPORTING ENGINE
+
+One scan → multiple outputs.
+
+                       📊 SCAN RESULTS
+                             │
+              ┌──────────────┼──────────────┐
+              │              │              │
+              ▼              ▼              ▼
+          📄 JSON         🌐 HTML        📜 LOGS
+              │              │              │
+              ▼              ▼              ▼
+        Automation      Human Review     Debugging
+
+JSON
+output/report.json
+
+HTML
+output/report.html
+
+Logs
+logs/scan_log.txt
+
+📈 LIVE MONITORING
+
+The project includes a monitoring interface for observing the scan while it is running.
+
+flowchart LR
+
+    SCANNER["🛡️ Scanner"]
+
+    STATUS["⚡ Status"]
     SITE["🌐 Current Site"]
-
     FORM["📝 Current Form"]
-
-    STATS["📈 Scan Statistics"]
-
+    STATS["📊 Statistics"]
+    LOGS["📜 Logs"]
     PROGRESS["⏳ Progress"]
 
-    LOGS["📜 Scanner Logs"]
+    API["🔌 Monitoring API"]
 
-    API["🔌 /api/monitor"]
-
-    UI["🖥️ Monitoring Dashboard"]
+    UI["🖥️ Dashboard"]
 
     SCANNER --> STATUS
     SCANNER --> SITE
     SCANNER --> FORM
     SCANNER --> STATS
-    SCANNER --> PROGRESS
     SCANNER --> LOGS
+    SCANNER --> PROGRESS
 
     STATUS --> API
     SITE --> API
     FORM --> API
     STATS --> API
-    PROGRESS --> API
     LOGS --> API
+    PROGRESS --> API
 
     API --> UI
 
-    UI --> REFRESH["🔄 Periodic Refresh"]
-    REFRESH --> API
+Dashboard Concept
+┌──────────────────────────────────────────────────────┐
+│              🛡️ CSRF AUTOMATION MONITOR             │
+├──────────────────────────────────────────────────────┤
+│                                                      │
+│  STATUS        🟢 RUNNING                            │
+│                                                      │
+│  CURRENT SITE  https://target.example                │
+│                                                      │
+│  CURRENT FORM  /account/update                       │
+│                                                      │
+│  ┌────────────┐ ┌────────────┐ ┌────────────┐       │
+│  │ 🌐 SITES   │ │ 📝 FORMS   │ │ 🛡️ TOKENS │       │
+│  │     12     │ │     47     │ │     31     │       │
+│  └────────────┘ └────────────┘ └────────────┘       │
+│                                                      │
+│  PROGRESS                                           │
+│  ███████████████████████░░░░░  78%                 │
+│                                                      │
+│  📜 LIVE LOGS                                        │
+│  ├─ Page discovered                                  │
+│  ├─ Form analyzed                                    │
+│  ├─ Token detected                                   │
+│  └─ Report updated                                   │
+│                                                      │
+└──────────────────────────────────────────────────────┘
 
-
-The monitor UI refreshes its monitoring data periodically and displays live scanner information. 
-G
-GitHub
-+1
-
-🗂️ Project Structure
-
-Current repository files include the scanner entry point, configuration, reporting components, monitoring interfaces, test target application, and dependency files. 
-G
-GitHub
-
+🗂️ PROJECT STRUCTURE
 CSRF_AUTOMATION/
 │
-├── 📄 main.py
-├── 📄 config.py
-├── 📄 event_report.py
+├── 🧠 main.py
+├── ⚙️ config.py
+├── 📊 event_report.py
 │
-├── 📄 monitor.py
-├── 📄 monitor1.html
-├── 📄 monitor.html
-├── 📄 scanner_monitor.py
+├── 📈 monitor.py
+├── 🖥️ monitor.html
+├── 🖥️ monitor1.html
+├── 📈 scanner_monitor.py
 │
-├── 📄 test_target_app.py
+├── 🧪 test_target_app.py
 ├── 📄 Untitled-1.html
 │
-├── 📄 requirements.txt
-├── 📄 requirements-browser.txt
-├── 📄 .gitignore
+├── 📦 requirements.txt
+├── 🎭 requirements-browser.txt
+├── 🚫 .gitignore
 │
-├── 📁 modules/
-│   ├── form_collector.py
-│   ├── session_factory.py
-│   ├── token_detector.py
-│   ├── request_analyzer.py
-│   ├── report_generator.py
-│   └── result_display.py
+├── modules/
+│   ├── 🕷️ form_collector.py
+│   ├── 🔐 session_factory.py
+│   ├── 🛡️ token_detector.py
+│   ├── 📡 request_analyzer.py
+│   ├── 📊 report_generator.py
+│   └── 🖥️ result_display.py
 │
-├── 📁 utils/
-│   ├── cli_input.py
-│   └── logger.py
+├── utils/
+│   ├── 🖥️ cli_input.py
+│   └── 📜 logger.py
 │
-├── 📁 output/
-│   ├── report.json
-│   ├── report.html
+├── output/
+│   ├── 📄 report.json
+│   ├── 🌐 report.html
 │   └── events/
 │
-├── 📁 logs/
-│   └── scan_log.txt
+├── logs/
+│   └── 📜 scan_log.txt
 │
-└── 📁 data/
+└── data/
     └── users.db
 
-🧩 Core Components
-main.py
-
-The primary entry point.
-
-It coordinates:
-
-User input
-Logging
-Session creation
-Form collection
-Token detection
-Request analysis
-Report generation
-Console output
-HTML report generation
-
-The current implementation imports FormCollector, TokenDetector, RequestAnalyzer, ReportGenerator, ResultDisplay, ScanLogger, and the session factory. 
-G
-GitHub
-
-config.py
-
-Contains application paths and configuration values such as:
-
-logs/scan_log.txt
-data/users.db
-output/events
-
-
-It also reads the application's secret key from the SECRET_KEY environment variable, with a development fallback. 
-G
-GitHub
-
-For production deployments, use an environment-provided secret rather than the development fallback.
-
-FormCollector
-
-Responsible for crawling pages and discovering forms.
-
-Conceptually:
-
-Target URL
-    ↓
-Fetch Page
-    ↓
-Parse HTML
-    ↓
-Find Links
-    ↓
-Find Forms
-    ↓
-Record Cookies
-    ↓
-Return Form Inventory
-
-TokenDetector
-
-Analyzes discovered forms for fields that appear to represent CSRF tokens.
-
-Possible examples of token-like fields include names containing concepts such as:
-
-csrf
-csrf_token
-csrf-token
-xsrf
-xsrf_token
-
-
-Detection should be treated as a heuristic, not proof that the application accepts or validates the token.
-
-RequestAnalyzer
-
-Analyzes discovered requests/forms and their associated observations.
-
-The scanner is designed to inspect requests rather than actively exploit them.
-
-ReportGenerator
-
-Combines scanner observations into structured findings and writes the JSON report.
-
-ResultDisplay
-
-Provides:
-
-Console summaries
-HTML reporting
-Human-readable scan results
-event_report.py
-
-Generates HTML event reports for application events.
-
-The implementation creates reports containing fields such as:
-
-Event ID
-Event type
-Username
-Site ID
-Timestamp
-IP address
-Status
-
-User-supplied values are HTML-escaped before being inserted into the generated report. 
-G
-GitHub
-
-📈 Monitoring Dashboard
-
-The monitoring interface provides a visual overview of the scan.
-
-Typical dashboard information includes:
-
-Metric	Description
-Scanner Status	Current scanner state
-Current Site	Site currently being processed
-Current Form	Form currently under analysis
-Total Sites	Number of discovered/target sites
-Sites Scanned	Number of processed sites
-Forms Found	Number of discovered forms
-CSRF Tokens	Possible CSRF-token indicators
-Vulnerable Forms	Potentially vulnerable forms
-Protected Forms	Potentially protected forms
-Errors	Scanner errors
-Progress	Scan completion percentage
-Started	Scan start time
-Completed	Scan completion time
-Logs	Live scanner messages
-
-These fields correspond to the monitoring UI currently present in the repository. 
-G
-GitHub
-+1
-
-📸 Screenshots / Images
-
-Create a directory for project screenshots:
-
-images/
-├── architecture.png
-├── scanner-start.png
-├── scanner-progress.png
-├── dashboard.png
-├── report-html.png
-├── report-json.png
-└── event-report.png
-
-
-Then add the screenshots to this README.
-
-🖥️ Scanner
-![Scanner](images/scanner-start.png)
-
-📈 Monitoring Dashboard
-![Monitoring Dashboard](images/dashboard.png)
-
-📊 HTML Report
-![HTML Report](images/report-html.png)
-
-📄 JSON Report
-![JSON Report](images/report-json.png)
-
-🔐 Event Report
-![Event Report](images/event-report.png)
-
-Recommended: Capture screenshots from your own running instance and commit them under images/. This avoids documenting UI that differs from the current implementation.
-🛠️ Installation
-1. Clone the Repository
+🚀 INSTALLATION
+1️⃣ Clone
 git clone https://github.com/cybernathiya/CSRF_AUTOMATION.git
 cd CSRF_AUTOMATION
 
-2. Create a Virtual Environment
+2️⃣ Virtual Environment
 Linux / macOS
 python3 -m venv venv
 source venv/bin/activate
@@ -742,697 +484,254 @@ Windows
 python -m venv venv
 venv\Scripts\activate
 
-3. Install Dependencies
+3️⃣ Install
 pip install -r requirements.txt
 
+▶️ RUN
+python main.py
 
-The current dependency file includes Requests, BeautifulSoup, lxml, argparse, colorama, Jinja2, OWASP ZAP's Python client, and Tabulate. 
-G
-GitHub
 
-🎭 Optional Browser Support
+Follow the prompts to configure the authorized target and scan parameters.
 
-For JavaScript-rendered applications:
-
+🎭 OPTIONAL BROWSER MODE
 pip install -r requirements-browser.txt
 
 
-Then install Chromium:
+Then:
 
 python -m playwright install chromium
 
-
-The repository's browser requirements extend the normal dependency set with Playwright. 
-G
-GitHub
-
-🚀 Running the Scanner
-
-Run the scanner:
-
-python main.py
-
-
-The application will display the CSRF scanner interface and request scan parameters.
-
-🔎 Typical Scan Workflow
-sequenceDiagram
-
-    actor Tester
-    participant Scanner
-    participant Target
-    participant Analyzer
-    participant Report
-    participant Monitor
-
-    Tester->>Scanner: Start scanner
-
-    Scanner->>Scanner: Read configuration
-
-    Scanner->>Target: Request target page
-
-    Target-->>Scanner: HTML response
-
-    Scanner->>Scanner: Extract links/forms/cookies
-
-    Scanner->>Target: Request discovered pages
-
-    Target-->>Scanner: Page responses
-
-    Scanner->>Analyzer: Analyze forms
-
-    Analyzer->>Analyzer: Detect possible CSRF token
-
-    Analyzer->>Analyzer: Analyze request characteristics
-
-    Analyzer-->>Scanner: Heuristic result
-
-    Scanner->>Report: Save findings
-
-    Report-->>Tester: JSON/HTML reports
-
-    Scanner->>Monitor: Update status
-
-    Monitor-->>Tester: Live progress
-
-🌐 Multiple Targets
-
-Multiple starting URLs can be supplied when supported by the scanner's input layer.
-
-Conceptually:
-
-Target 1 ─┐
-Target 2 ─┼──> Scanner ──> Analysis ──> Reports
-Target 3 ─┤
-Target N ─┘
-
-
-Example:
-
-https://authorized-app.example/
-https://authorized-app.example/account/
-
-
-Only scan systems for which you have explicit authorization.
-
-🍪 Authenticated Scanning
-
-The scanner supports loading an authorized browser-exported Netscape/Mozilla-format cookie file.
-
-Conceptual flow:
-
-flowchart LR
-
-    BROWSER["🌐 Authorized Browser"]
-
-    LOGIN["🔐 Login"]
-
-    COOKIE["🍪 Export Cookies"]
-
-    FILE["cookies.txt"]
-
-    SCANNER["🛡️ CSRF Scanner"]
-
-    TARGET["🌐 Target Application"]
-
-    REPORT["📊 Report"]
-
-    BROWSER --> LOGIN
-    LOGIN --> COOKIE
-    COOKIE --> FILE
-    FILE --> SCANNER
-    SCANNER --> TARGET
-    TARGET --> SCANNER
-    SCANNER --> REPORT
-
-
-The repository documentation specifies that cookie values are kept in memory for requests and are not written to reports or scan logs. The cookie file itself should still be treated like a password and removed/protected after use. 
-G
-GitHub
-
-Example:
-
-python main.py
-
-
-Then provide the authorized cookie file when requested.
-
-⚙️ Scan Configuration
-
-The scanner supports configuration concepts including:
-
-Option	Purpose
-Start URL	Initial target
-Multiple targets	Scan multiple starting points
-Maximum pages	Limit crawl size
-Scope	Restrict crawl to path/origin
-Exclusions	Avoid selected paths
-Delay	Pause between requests
-Cookie file	Use an authorized session
-JS rendering	Process JavaScript-generated pages
-Proxy	Optional proxy configuration
-Output paths	Configure generated reports
-
-The repository's README describes bounded crawling, configurable page limits, path exclusions, request delays, cookie-file authentication, and optional Playwright rendering. 
-G
-GitHub
-
-🧭 Crawl Scope
-
-The scanner is designed to keep crawling bounded.
-
-flowchart TD
-
-    START["Starting URL"]
-
-    PATH["Starting URL Path"]
-
-    ORIGIN["Target Origin"]
-
-    PAGE["Candidate Page"]
-
-    SCOPE{"Within Scope?"}
-
-    SCAN["Scan Page"]
-
-    SKIP["Skip Page"]
-
-    START --> PATH
-    START --> ORIGIN
-
-    PATH --> PAGE
-    ORIGIN --> PAGE
-
-    PAGE --> SCOPE
-
-    SCOPE -->|Yes| SCAN
-    SCOPE -->|No| SKIP
-
-
-This helps prevent accidental expansion into unrelated parts of a target application.
-
-🚫 Exclusions
-
-State-changing or sensitive routes should be treated carefully.
-
-Examples include:
-
-logout
-delete
-unsubscribe
-
-
-The repository documentation indicates that state-like paths such as these are excluded by default. 
-G
-GitHub
-
-📁 Output
-
-After a successful scan, the project can generate:
-
-output/
-│
-├── report.json
-├── report.html
-│
-└── events/
-    ├── event-report-1.html
-    ├── event-report-2.html
-    └── ...
-
-
-Logs:
-
-logs/
-└── scan_log.txt
-
-
-The main scanner explicitly reports output/report.html and the configured scan-log location when the scan completes. 
-G
-GitHub
-
-📄 JSON Report
-
-The JSON report is intended for machine-readable processing.
-
-Conceptual structure:
-
-{
-  "scan": {
-    "start_urls": [],
-    "scope": "path",
-    "max_pages": 100,
-    "request_delay_seconds": 0.2,
-    "render_js": false
-  },
-  "results": [],
-  "generated_at": "..."
-}
-
-
-This makes the scanner suitable for integration into larger security-testing or reporting workflows.
-
-🌐 HTML Report
-
-The HTML report is designed for human-readable analysis.
-
-┌───────────────────────────────────────┐
-│        CSRF SCAN REPORT               │
-├───────────────────────────────────────┤
-│ Target                                │
-│ Crawl Statistics                      │
-│ Forms Discovered                      │
-│ Token Indicators                      │
-│ Cookie Observations                   │
-│ Findings                              │
-│ Severity / Review Status              │
-└───────────────────────────────────────┘
-
-📜 Logging Flow
-flowchart TD
-
-    START["Scanner Start"]
-
-    STARTLOG["Write Start Event"]
-
-    CRAWLLOG["Write Crawl Information"]
-
-    RESULTLOG["Write Result Summary"]
-
-    ERRORLOG["Write Errors"]
-
-    FILE["logs/scan_log.txt"]
-
-    END["Scan Complete"]
-
-    START --> STARTLOG
-    STARTLOG --> CRAWLLOG
-
-    CRAWLLOG --> RESULTLOG
-    CRAWLLOG --> ERRORLOG
-
-    RESULTLOG --> FILE
-    ERRORLOG --> FILE
-
-    FILE --> END
-
-🔐 Security Model
-
-The project is intended to support authorized security assessment.
-
-flowchart TD
-
-    AUTH["🔐 Authorized Tester"]
-
-    TARGET["🌐 Authorized Application"]
-
-    SCANNER["🛡️ CSRF Scanner"]
-
-    OBSERVE["🔎 Observe"]
-
-    ANALYZE["📊 Analyze"]
-
-    REPORT["📄 Report"]
-
-    AUTH --> TARGET
-    AUTH --> SCANNER
-
-    SCANNER --> TARGET
-
-    TARGET --> OBSERVE
-    OBSERVE --> ANALYZE
-    ANALYZE --> REPORT
-
-
-The scanner should be considered an observation and heuristic analysis tool, not an automated exploitation framework.
-
-⚠️ Limitations
-
-This project does not prove that a CSRF vulnerability is exploitable.
-
-Important limitations include:
-
-Form discovery does not guarantee complete application coverage.
-JavaScript-heavy applications may require browser rendering.
-A CSRF-token-looking field may not actually be validated server-side.
-Absence of a token-looking field does not automatically prove CSRF.
-Cookie-name heuristics may misclassify cookies.
-SameSite behavior depends on browser context.
-Routes reachable only through non-link navigation may not be discovered.
-The scanner does not submit forms.
-The scanner does not attempt to bypass CSRF protections.
-Potential findings require manual validation.
-
-These limitations are consistent with the repository's current README, which describes the scanner as heuristic and explicitly states that it does not submit forms, test token enforcement, or confirm exploitability. 
-G
-GitHub
-
-🔍 Manual Validation
-
-When the scanner reports a potential issue, a security tester should manually validate the application using an authorized test environment.
-
-A conceptual validation workflow is:
-
-flowchart TD
-
-    FINDING["⚠️ Potential Finding"]
-
-    REVIEW["🔎 Review Form"]
-
-    TOKEN["Check CSRF Token"]
-
-    SESSION["Check Session Behavior"]
-
-    SERVER["Review Server-Side Validation"]
-
-    SAFE["Use Controlled Test Account"]
-
-    CONFIRM{"Security Control Effective?"}
-
-    PROTECTED["🛡️ Protection Appears Effective"]
-
-    REVIEW_REQUIRED["🔎 Further Manual Review"]
-
-    FINDING --> REVIEW
-    REVIEW --> TOKEN
-    TOKEN --> SESSION
-    SESSION --> SERVER
-    SERVER --> SAFE
-
-    SAFE --> CONFIRM
-
-    CONFIRM -->|Yes| PROTECTED
-    CONFIRM -->|Unclear| REVIEW_REQUIRED
-
-🧪 Testing Architecture
-
-The repository also contains a target application used for testing the scanner.
-
-flowchart LR
-
-    TESTER["👤 Tester"]
-
-    TARGET["🧪 Test Target Application"]
-
-    SCANNER["🛡️ Scanner"]
-
-    MONITOR["📈 Monitor"]
-
-    REPORT["📊 Reports"]
-
-    TESTER --> TARGET
-    TESTER --> SCANNER
-
-    SCANNER --> TARGET
-
-    TARGET --> SCANNER
-
-    SCANNER --> MONITOR
-    SCANNER --> REPORT
-
-    MONITOR --> TESTER
-    REPORT --> TESTER
-
-🧱 Technology Stack
-Technology	Purpose
-Python	Core implementation
-Requests	HTTP communication
-BeautifulSoup	HTML parsing
-lxml	HTML/XML parsing
-Jinja2	HTML/report templating
-Colorama	Console formatting
-Tabulate	Table formatting
-Playwright	Optional JavaScript rendering
-OWASP ZAP Python Client	Security-testing integration/dependency
-HTML/CSS/JavaScript	Monitoring interfaces
-
-The dependency versions are defined in the repository's requirements.txt; Playwright is separately included in requirements-browser.txt. 
-G
-GitHub
-+1
-
-🔄 Complete End-to-End Architecture
-flowchart TB
-
-    USER["👤 Security Tester"]
-
-    INPUT["🖥️ CLI / Input Layer"]
-
-    CONFIG["⚙️ Configuration"]
-
-    SESSION["🔐 Session Factory"]
-
-    COOKIE["🍪 Optional Cookie File"]
-
-    CRAWLER["🕷️ Form Collector"]
-
-    TARGET["🌐 Authorized Web Application"]
-
-    PAGES["📄 Discovered Pages"]
-
-    FORMS["📝 Discovered Forms"]
-
-    COOKIES["🍪 Cookie Observations"]
-
-    TOKEN["🛡️ Token Detector"]
-
-    ANALYZER["📡 Request Analyzer"]
-
-    RESULTS["📊 Scanner Results"]
-
-    JSON["📄 JSON Report"]
-
-    HTML["🌐 HTML Report"]
-
-    CONSOLE["🖥️ Console Output"]
-
-    LOGS["📜 Scan Logs"]
-
-    MONITORAPI["🔌 Monitoring API"]
-
-    DASHBOARD["📈 Monitoring Dashboard"]
-
-    EVENTS["📋 Event Reports"]
-
-    USER --> INPUT
-    INPUT --> CONFIG
-
-    CONFIG --> SESSION
-    INPUT --> SESSION
-
-    COOKIE --> SESSION
-
-    SESSION --> CRAWLER
-
-    CRAWLER <--> TARGET
-
-    TARGET --> PAGES
-    PAGES --> FORMS
-    PAGES --> COOKIES
-
-    FORMS --> TOKEN
-    FORMS --> ANALYZER
-
-    COOKIES --> ANALYZER
-    TOKEN --> RESULTS
-    ANALYZER --> RESULTS
-
-    RESULTS --> JSON
-    RESULTS --> HTML
-    RESULTS --> CONSOLE
-
-    RESULTS --> LOGS
-
-    LOGS --> MONITORAPI
-    RESULTS --> MONITORAPI
-
-    MONITORAPI --> DASHBOARD
-
-    USER --> DASHBOARD
-
-    EVENTS --> USER
-
-📋 Scanner Lifecycle
-stateDiagram-v2
-
-    [*] --> Idle
-
-    Idle --> Initializing: Start scanner
-
-    Initializing --> SessionReady: Session created
-
-    SessionReady --> Crawling: Begin crawl
-
-    Crawling --> DiscoveringForms: Page loaded
-
-    DiscoveringForms --> Analyzing: Forms discovered
-
-    Analyzing --> Crawling: More pages
-
-    Analyzing --> Reporting: Crawl complete
-
-    Reporting --> Completed: Reports generated
-
-    Crawling --> Error: Scanner error
-    Analyzing --> Error: Analysis error
-
-    Error --> Idle: Stop / recover
-
-    Completed --> Idle
-
-📊 Finding Classification
-
-The scanner should be understood as producing signals, not guaranteed exploit results.
-
-flowchart TD
-
-    RESULT["Scanner Observation"]
-
-    HIGH["🔴 HIGH\nPotentially Significant"]
-
-    MEDIUM["🟠 MEDIUM\nPotential Issue"]
-
-    INFO["🔵 INFO\nInformational"]
-
-    REVIEW["🟡 REVIEW\nInsufficient Evidence"]
-
-    MANUAL["👤 Manual Validation"]
-
-    RESULT --> HIGH
-    RESULT --> MEDIUM
-    RESULT --> INFO
-    RESULT --> REVIEW
-
-    HIGH --> MANUAL
-    MEDIUM --> MANUAL
-    REVIEW --> MANUAL
-
-
-The project's documentation specifically notes that HIGH and MEDIUM should be manually validated, while INFO and REVIEW represent different levels of available evidence. 
-G
-GitHub
-
-🛡️ Recommended CSRF Defenses
-
-For applications being tested, recommended defensive controls include:
-
-Use unpredictable CSRF tokens.
-Bind tokens appropriately to the user's session.
-Validate tokens server-side.
-Use appropriate SameSite cookie settings.
-Use secure authentication/session management.
-Avoid state-changing actions through unsafe HTTP methods such as GET.
-Consider additional verification for highly sensitive operations.
-
-OWASP recommends CSRF tokens and appropriate cookie protections as important defensive mechanisms. 
-G
-GitHub
-
-🔒 Responsible Use
-
-This project is intended for:
-
-Security education
-Local security laboratories
-CTF environments
-Applications you own
-Applications for which you have explicit written authorization
-Defensive security testing
-Secure-development testing
-
-Do not use this tool against systems without authorization.
-
-⚠️ Disclaimer
-
-This project is provided for educational and authorized security-testing purposes only.
-
-The author and contributors are not responsible for misuse, unauthorized scanning, disruption, data loss, privacy violations, or other consequences resulting from use of this software.
-
-Always obtain explicit permission before scanning a target.
-
-📚 Security References
-OWASP CSRF Prevention Cheat Sheet
-OWASP Web Security Testing Guide – CSRF Testing
-MDN – Cross-Site Request Forgery
-🤝 Contributing
-
-Contributions are welcome.
-
-Suggested improvements:
-
-Add additional CSRF heuristics
-Improve JavaScript crawling
-Add authenticated browser sessions
-Improve report visualization
-Add automated regression tests
-Add CI/CD security testing
-Improve scanner performance
-Add configurable rule sets
-Add richer dashboard charts
-Add export formats such as CSV/PDF
-Improve documentation and examples
-🗺️ Future Roadmap
-timeline
-    title CSRF Automation Roadmap
-
-    Current : Form Discovery
-            : Token Detection
-            : Cookie Observation
-            : Request Analysis
-            : JSON/HTML Reports
-            : Monitoring Dashboard
-
-    Next : Better JavaScript Crawling
-         : Improved Heuristics
-         : Better Reporting
-
-    Future : Advanced Authentication
-           : CI/CD Integration
-           : Security Regression Testing
-           : Extended Web Security Checks
-
-⭐ Project Summary
-                 🔐 CSRF AUTOMATION
-                         │
-                         ▼
-                ┌─────────────────┐
-                │ Target Discovery│
-                └────────┬────────┘
-                         │
-                         ▼
-                ┌─────────────────┐
-                │  Form Discovery │
-                └────────┬────────┘
-                         │
-             ┌───────────┴───────────┐
-             ▼                       ▼
-      🛡️ Token Detection       🍪 Cookie Analysis
-             │                       │
-             └───────────┬───────────┘
-                         ▼
-                 📡 Request Analysis
-                         │
-                         ▼
-                  📊 Risk Signals
-                         │
-             ┌───────────┼───────────┐
-             ▼           ▼           ▼
-          JSON        HTML       Console
-             │           │           │
-             └───────────┼───────────┘
-                         ▼
-                  📈 Monitoring
-
-👨‍💻 Author
-
-cybernathiya
-
-GitHub Repository:
-
-CSRF_AUTOMATION
+📸 SCREENSHOTS
+
+Add your project screenshots here:
+
+images/
+├── scanner.png
+├── dashboard.png
+├── report.png
+├── json-report.png
+└── event-report.png
+
+🖥️ Scanner
+
+<p align="center"> <img src="images/scanner.png" width="90%" alt="CSRF Automation Scanner"> </p>
+
+📈 Monitoring Dashboard
+
+<p align="center"> <img src="images/dashboard.png" width="90%" alt="CSRF Automation Dashboard"> </p>
+
+📊 Security Report
+
+<p align="center"> <img src="images/report.png" width="90%" alt="CSRF Security Report"> </p>
+
+🔬 EXAMPLE WORKFLOW
+        👤 SECURITY TESTER
+                 │
+                 ▼
+        ┌─────────────────┐
+        │ python main.py  │
+        └────────┬────────┘
+                 │
+                 ▼
+          🌐 TARGET URL
+                 │
+                 ▼
+          🕷️ CRAWLER
+                 │
+          ┌──────┴──────┐
+          ▼             ▼
+       📝 FORMS      🍪 COOKIES
+          │             │
+          ▼             │
+    🛡️ TOKEN CHECK     │
+          │             │
+          └──────┬──────┘
+                 ▼
+          📡 ANALYZER
+                 │
+                 ▼
+          📊 FINDINGS
+                 │
+       ┌─────────┼─────────┐
+       ▼         ▼         ▼
+      JSON      HTML      LIVE
+       │         │         │
+       ▼         ▼         ▼
+     🤖 CI     👤 USER    📈 UI
+
+🧩 TECHNOLOGY STACK
 
 <p align="center">
 
-<b>🔐 Security Testing • Automation • CSRF Analysis • Defensive Security</b>
+Technology	Role
+🐍 Python	Core engine
+🌐 Requests	HTTP communication
+🍲 BeautifulSoup	HTML parsing
+⚡ lxml	HTML/XML processing
+🎨 Jinja2	Report templates
+🖍️ Colorama	CLI formatting
+📋 Tabulate	Console tables
+🎭 Playwright	JavaScript rendering
+🛡️ OWASP ZAP Client	Security tooling integration
+
+</p>
+
+🧠 SECURITY MODEL
+flowchart TD
+
+    AUTH["🔐 AUTHORIZED TESTING"]
+
+    TARGET["🌐 Target Application"]
+
+    SCAN["🛡️ Scanner"]
+
+    OBSERVE["🔎 Observe"]
+
+    ANALYZE["🧠 Analyze"]
+
+    REPORT["📊 Report"]
+
+    REVIEW["👤 Human Review"]
+
+    AUTH --> TARGET
+    AUTH --> SCAN
+
+    SCAN --> TARGET
+    TARGET --> OBSERVE
+
+    OBSERVE --> ANALYZE
+    ANALYZE --> REPORT
+
+    REPORT --> REVIEW
+
+    REVIEW --> DECISION{"Security Decision"}
+
+    DECISION -->|Protected| SAFE["✅ Documented"]
+    DECISION -->|Potential Issue| INVESTIGATE["🔎 Investigate"]
+
+⚠️ IMPORTANT LIMITATIONS
+
+This project is intentionally designed as a heuristic assessment tool.
+
+It does not:
+
+❌ Automatically prove exploitability
+❌ Submit discovered forms
+❌ Bypass CSRF protections
+❌ Guarantee complete application coverage
+❌ Replace manual penetration testing
+
+
+It does:
+
+✅ Discover pages
+✅ Discover forms
+✅ Inspect fields
+✅ Identify token-like indicators
+✅ Observe cookies
+✅ Analyze request characteristics
+✅ Generate reports
+✅ Provide monitoring information
+
+🛡️ RESPONSIBLE USE
+
+Use this project only against:
+
+✅ Your own applications
+✅ Local test environments
+✅ CTF/lab environments
+✅ Applications where you have explicit authorization
+
+
+Do not scan systems without permission.
+
+📚 REFERENCES
+OWASP CSRF Prevention Cheat Sheet
+OWASP Web Security Testing Guide
+MDN Web Security
+🗺️ ROADMAP
+timeline
+
+    title CSRF AUTOMATION
+
+    Current
+        : 🕷️ Form Discovery
+        : 🛡️ Token Detection
+        : 🍪 Cookie Analysis
+        : 📡 Request Analysis
+        : 📄 JSON Reports
+        : 🌐 HTML Reports
+        : 📈 Monitoring
+
+    Next
+        : 🎭 Better JavaScript Crawling
+        : 🧠 Improved Detection Rules
+        : 📊 Better Visualizations
+
+    Future
+        : 🔄 CI/CD Integration
+        : 🧪 Automated Regression Testing
+        : 🔐 Advanced Authentication
+        : 📈 Advanced Analytics
+
+⭐ PROJECT IN ONE IMAGE
+╔══════════════════════════════════════════════════════════╗
+║                                                          ║
+║              🛡️  CSRF AUTOMATION                        ║
+║                                                          ║
+║       ┌───────────────┐                                  ║
+║       │  🌐 TARGET    │                                  ║
+║       └───────┬───────┘                                  ║
+║               ▼                                          ║
+║       ┌───────────────┐                                  ║
+║       │  🕷️ CRAWLER  │                                  ║
+║       └───────┬───────┘                                  ║
+║               ▼                                          ║
+║       ┌───────────────┐                                  ║
+║       │  📝 FORMS     │                                  ║
+║       └───────┬───────┘                                  ║
+║               ▼                                          ║
+║      ┌────────┴─────────┐                                ║
+║      ▼                  ▼                                ║
+║  🛡️ TOKEN            🍪 COOKIE                           ║
+║  ANALYSIS             ANALYSIS                           ║
+║      │                  │                                ║
+║      └────────┬─────────┘                                ║
+║               ▼                                          ║
+║       ┌───────────────┐                                  ║
+║       │ 🧠 ANALYZER   │                                  ║
+║       └───────┬───────┘                                  ║
+║               ▼                                          ║
+║       ┌───────────────┐                                  ║
+║       │ 📊 FINDINGS   │                                  ║
+║       └───────┬───────┘                                  ║
+║               │                                          ║
+║       ┌───────┼────────┐                                 ║
+║       ▼       ▼        ▼                                 ║
+║     📄 JSON  🌐 HTML  📈 LIVE                            ║
+║                                                          ║
+╚══════════════════════════════════════════════════════════╝
+
+👨‍💻 AUTHOR
+
+<p align="center">
+
+<b>cybernathiya</b>
+
+<br><br>
+
+<a href="https://github.com/cybernathiya"> <img src="https://img.shields.io/badge/GitHub-cybernathiya-181717?style=for-the-badge&logo=github" /> </a>
+
+</p>
+
+<p align="center">
+
+🔐 Build • Scan • Analyze • Secure
+
+<b>CSRF AUTOMATION</b>
+
+<br>
+
+For authorized security testing and educational purposes.
 
 </p>
